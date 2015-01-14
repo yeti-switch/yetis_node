@@ -1,4 +1,4 @@
-module YetisEye
-  class Error
+module YetisNode
+  class Error < RuntimeError
   end 
 end

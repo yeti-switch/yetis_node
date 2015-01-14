@@ -6,6 +6,10 @@ module YetisNode
         invoke_request
       end
 
+      def router_clear_cache
+        invoke_request
+      end
+
       def call_disconnect(*args)
         invoke_request(args)
       end

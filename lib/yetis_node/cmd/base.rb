@@ -8,13 +8,11 @@ module YetisNode
       end
 
       def rpc_send(*args)
-        result = xml_rpc.call_async('di', 'yeti', *args)
-        if result.is_a?(Array)
-          raise Error.new("Yeti RPC ERROR: #{result[0]}") unless  (200..299) === result[0].to_i
-          result[1]
-        else
-          raise Error.new("Yeti RPC ERROR: Unexpected result")
-        end
+        begin
+          xml_rpc.call_async('di', 'yeti', *args)
+        rescue XMLRPC::FaultException => e
+           raise Error.new(e.message)
+        end    
       end
 
     end

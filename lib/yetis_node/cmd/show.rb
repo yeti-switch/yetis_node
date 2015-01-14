@@ -53,6 +53,15 @@ module YetisNode
         invoke_show
       end
 
+
+      def system_status
+        invoke_show
+      end
+
+      def stats
+        invoke_show
+      end
+
       def configuration
         invoke_show
       end
@@ -64,6 +73,10 @@ module YetisNode
       def version
         invoke_show
       end
+
+      def resource_state(type_id, id = nil)
+        invoke_show([type_id, id || :all])
+      end 
 
       def invoke_show(args = [])
         invoke(caller_locations(1, 1)[0].label, 'show', args)
