@@ -6,7 +6,7 @@ module YetisNode
         invoke_request
       end
 
-      def router_clear_cache
+      def router_cache_clear
         invoke_request
       end
 
