@@ -1,4 +1,4 @@
-require 'xmlrpc/client'
+require 'forwardable'
 module YetisNode
 
 
@@ -7,13 +7,16 @@ module YetisNode
   # node.calls_count
   # => "10"
   class Client
-    attr_reader :uri
+    extend Forwardable
 
-    DEFAULT_TIMEOUT = 10
+    attr_reader :uri, :options
+
+    def_delegators :@transport, :rpc_send
 
     def initialize(uri, options = {})
       @uri = uri
       @options = options
+      select_transport!
     end
 
     include Cmd::Base
@@ -21,15 +24,22 @@ module YetisNode
     include Cmd::Request
     include Cmd::Set
 
-
     protected :invoke_show, :invoke_request, :invoke_set
 
-    protected
+    private
 
-    def xml_rpc
-      @xml_rpc ||= XMLRPC::Client.new2(uri, @options.fetch(:proxy, nil), @options.fetch(:timeout, DEFAULT_TIMEOUT))
+    def select_transport!
+      transport_klass = case @options.fetch(:transport, :xml_rpc)
+                          when :xml_rpc
+                            XmlRpcTransport
+                          when :json_rpc
+                            JsonRpcTransport
+                          else
+                            raise Error.new('invalid transport')
+                        end
+
+      @transport = transport_klass.new(@uri, @options)
     end
-
 
   end
 end
