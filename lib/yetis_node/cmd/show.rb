@@ -76,7 +76,7 @@ module YetisNode
 
       def resource_state(type_id, id = nil)
         invoke_show([type_id, id || :all])
-      end 
+      end
 
       def invoke_show(args = [])
         invoke(caller_locations(1, 1)[0].label, 'show', args)
