@@ -9,7 +9,7 @@ module YetisNode
   class Client
     extend Forwardable
 
-    attr_reader :uri, :options
+    attr_reader :uri, :options, :transport
 
     def_delegators :@transport, :rpc_send
 
