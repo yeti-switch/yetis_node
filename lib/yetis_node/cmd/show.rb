@@ -54,8 +54,8 @@ module YetisNode
       end
 
 
-      def system_status
-        invoke_show
+      def system_status(*args)
+        invoke_show(args)
       end
 
       def stats
