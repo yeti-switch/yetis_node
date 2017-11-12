@@ -3,7 +3,7 @@ module YetisNode
     module Base
 
       def invoke(method, prefix, args = [])
-        rpc_send(*([prefix] + method.to_s.split('_') + args.compact))
+        rpc_send("#{prefix}.#{method}", args)
       end
 
     end
