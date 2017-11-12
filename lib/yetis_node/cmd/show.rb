@@ -30,7 +30,7 @@ module YetisNode
       # show version
 
       def registrations_count
-        registrations('count')
+        invoke_show_command('registrations.count')
       end
 
       def registrations(*args)
@@ -38,11 +38,11 @@ module YetisNode
       end
 
       def calls_filtered(only = [])
-        calls('filtered', *only)
+        invoke_show_command('calls.filtered', only)
       end
 
       def calls_count
-        calls('count')
+        invoke_show_command('calls.count')
       end
 
       def calls(*args)
@@ -55,31 +55,36 @@ module YetisNode
 
 
       def system_status(*args)
-        invoke_show(args)
+        invoke_show_command('system.status', args)
       end
 
       def stats
-        invoke_show
+        invoke_show_command('status')
       end
 
       def configuration
-        invoke_show
+        invoke_show_command('configuration')
       end
 
       def interfaces
-        invoke_show
+        invoke_show_command('interfaces')
       end
 
       def version
-        invoke_show
+        invoke_show_command('version')
       end
 
       def resource_state(type_id, id = nil)
         invoke_show([type_id, id || :all])
       end
 
+      # TODO: clean up this show.rb file
       def invoke_show(args = [])
         invoke(caller_locations(1, 1)[0].label, 'show', args)
+      end
+
+      def invoke_show_command(command, params = [])
+        invoke(command, 'show', params)
       end
 
     end

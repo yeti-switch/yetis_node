@@ -16,7 +16,7 @@ module YetisNode
     def initialize(uri, options = {})
       @uri = uri
       @options = options
-      select_transport!
+      @transport = JsonRpcTransport.new(@uri, @options)
     end
 
     include Cmd::Base
@@ -26,21 +26,5 @@ module YetisNode
 
     protected :invoke_show, :invoke_request, :invoke_set
 
-    private
-
-    def select_transport!
-      transport_klass = case @options.fetch(:transport, :xml_rpc)
-                          when :xml_rpc
-                            XmlRpcTransport
-                          when :json_rpc
-                            JsonRpcTransport
-                          else
-                            raise Error.new('invalid transport')
-                        end
-
-      @transport = transport_klass.new(@uri, @options)
-    end
-
   end
 end
-  

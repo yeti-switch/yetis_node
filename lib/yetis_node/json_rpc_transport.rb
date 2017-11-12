@@ -1,11 +1,12 @@
 require 'jrpc'
+
 module YetisNode
   class JsonRpcTransport < BaseTransport
 
-    def rpc_send(*args)
+    def rpc_send(method_name, params)
       begin
         json_rpc.connect if json_rpc.closed?
-        result = json_rpc.invoke_request(*args)
+        result = json_rpc.perform_request(method_name, params: params)
         json_rpc.close
         result
       rescue ::JRPC::Error => e
