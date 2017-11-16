@@ -16,8 +16,10 @@ module YetisNode
 
     def json_rpc
       @json_rpc ||= ::JRPC::TcpClient.new uri,
-                            namespace: 'yeti.',
-                            timeout: options.fetch(:timeout, BaseTransport::DEFAULT_TIMEOUT)
+                                          namespace: 'yeti.',
+                                          timeout: default_timeout,
+                                          connect_timeout: connect_timeout,
+                                          read_timeout: read_timeout
     end
 
   end
