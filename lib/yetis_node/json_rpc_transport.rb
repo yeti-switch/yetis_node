@@ -15,11 +15,13 @@ module YetisNode
     end
 
     def json_rpc
+      # TODO: add logger
       @json_rpc ||= ::JRPC::TcpClient.new uri,
                                           namespace: 'yeti.',
                                           timeout: default_timeout,
                                           connect_timeout: connect_timeout,
-                                          read_timeout: read_timeout
+                                          read_timeout: read_timeout,
+                                          connect_retry_count: connect_retry_count
     end
 
   end
