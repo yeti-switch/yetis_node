@@ -3,7 +3,7 @@ require 'jrpc'
 module YetisNode
   class JsonRpcTransport < BaseTransport
 
-    def rpc_send(method_name, params)
+    def rpc_send(method_name, params = [])
       begin
         json_rpc.connect if json_rpc.closed?
         result = json_rpc.perform_request(method_name, params: params)
@@ -15,9 +15,13 @@ module YetisNode
     end
 
     def json_rpc
+      # TODO: add logger
       @json_rpc ||= ::JRPC::TcpClient.new uri,
-                            namespace: 'yeti.',
-                            timeout: options.fetch(:timeout, BaseTransport::DEFAULT_TIMEOUT)
+                                          namespace: 'yeti.',
+                                          timeout: default_timeout,
+                                          connect_timeout: connect_timeout,
+                                          read_timeout: read_timeout,
+                                          connect_retry_count: connect_retry_count
     end
 
   end
