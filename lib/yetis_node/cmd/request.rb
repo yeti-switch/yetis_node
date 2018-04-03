@@ -15,7 +15,7 @@ module YetisNode
       end
 
       def invoke_request(args = [])
-        invoke(caller_locations(1, 1)[0].label, 'request', args)
+        invoke(caller_locations(1, 1)[0].label.gsub('_', '.'), 'request', args)
       end
 
     end
